@@ -1,0 +1,8 @@
+# Arquivos compilados em bytes / otimizados / DLL
+__pycache __ /
+* .py [cod]
+* $ py.class
+*.pyc
+
+.vscode
+teste.py
