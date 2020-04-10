@@ -1,8 +1,9 @@
+import agbase
 from random import uniform
 
 from agbase import CAPACIDADE as CAP
-from agbase import sortBeneficio, sortPeso, sortAvaliacao, sortValorDeUtilidade, avaliacaoLinear, avaliacao
-from agbase import gerarBinarioString, calculaBeneficioEPeso, rankingSelecaoLinear, criarNovaGeracao
+from agbase import sortBeneficio, sortPeso, sortAvaliacao, sortValorDeUtilidade
+from agbase import gerarBinarioString, calculaBeneficioEPeso, rankingSelecaoLinear
 
 
 #####################################
@@ -28,31 +29,21 @@ print("1 - Inicialização da população")
 print(f"populoção inicial criada >>> {populacao[-1]}, tamanho: {len(populacao)}","-"*50, sep="\n")
 
 qt_geracoes = 1000
+sp = round(uniform(1,2), 2)
 melhor_geracao = [0, 0, 0, 0, 0]# [bin, ben, peso, avaliacao, geracao]
 
-
-
-
+    
 for i in range(2): # range(qt_geracoes):
     if not isinstance(populacao[0], (list, tuple,)):
         populacao = [ calculaBeneficioEPeso(x) for x in populacao ]
 
-
     # print("# 2 - Avaliação de cada indivíduo")
-    # os indivíduos devem ter essa estrutura: [binário:str, benefício:int, peso:int, avaliacao:float]
-    if i == 0:
-        populacao = [ calculaBeneficioEPeso( BS(length=8) ) for i in range(POPULACAO_LENGTH) ]
-        if not isinstance(populacao[0], (list, tuple,)):
-            populacao = [ calculaBeneficioEPeso(x) for x in populacao ]
-        avaliacao(populacao)        
-        
-    elif i == 1:
-        populacao = [ calculaBeneficioEPeso( BS(length=8) ) for i in range(POPULACAO_LENGTH) ]
-        if not isinstance(populacao[0], (list, tuple,)):
-            populacao = [ calculaBeneficioEPeso(x) for x in populacao ]
-        avaliacao(populacao)        
+    # os indivíduos devem ter essa estrutura: [binário:str, benefício:int, peso:int, avaliacao:float]    
+    for i in range(len(populacao)):        
+        av = agbase.avaliacaoLinear(len(populacao), i, sp)    
+        populacao[i].append(av)
 
-    # print("#3 - Seleção de alguns indivíduos")
+    print("#3 - Seleção de alguns indivíduos")
     # precisa da dois pronta para funcionar
     length, retries, quant, melhores = 0, 0, 10, []
 
@@ -86,8 +77,8 @@ for i in range(2): # range(qt_geracoes):
     # print("#5 - concepção da nova geração")
     length, retries, nova_populacao = 0, 0, []
 
-
-    if melhor: print( f"Melhor da geração ({i}): - binário: {melhor[0]}, benefício: {melhor[1]}, peso: {melhor[2]}, avaliação: {round(melhor[3], 2)}." )    
+    populacao = [ i[:3] for i in populacao if len(i) == 4 ]
+    if melhor: print( f"Melhor da geração ({i}): - binário: {melhor[0]}, benefício: {melhor[1]}, peso: {melhor[2]}, avaliação: {round(melhor[3], 2)}." )
 
 
 

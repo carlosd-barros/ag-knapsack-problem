@@ -1,5 +1,5 @@
 import random as rd
-from random import uniform
+
 from typing import Tuple, List
 
 
@@ -120,10 +120,3 @@ def criarNovaGeracao(populacao:List, prob:int=1) -> List:
             results += childs
 
     return results
-
-def avaliacao(populacao):
-    sp = round(uniform(1,2), 2)
-    populacao_tam = len(populacao)
-    for i in range(populacao_tam):        
-        av = avaliacaoLinear(populacao_tam, i, sp)    
-        populacao[i].append(av)
