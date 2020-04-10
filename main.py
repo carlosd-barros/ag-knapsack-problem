@@ -1,7 +1,7 @@
 from random import uniform
 
 from agbase import CAPACIDADE as CAP
-from agbase import sortBeneficio, sortPeso, sortAvaliacao, sortValorDeUtilidade, avaliacaoLinear
+from agbase import sortBeneficio, sortPeso, sortAvaliacao, sortValorDeUtilidade, avaliacaoLinear, avaliacao
 from agbase import gerarBinarioString, calculaBeneficioEPeso, rankingSelecaoLinear, criarNovaGeracao
 
 
@@ -28,15 +28,9 @@ print("1 - Inicialização da população")
 print(f"populoção inicial criada >>> {populacao[-1]}, tamanho: {len(populacao)}","-"*50, sep="\n")
 
 qt_geracoes = 1000
-sp = round(uniform(1,2), 2)
 melhor_geracao = [0, 0, 0, 0, 0]# [bin, ben, peso, avaliacao, geracao]
 
-# print("# 2 - Avaliação de cada indivíduo")
-# os indivíduos devem ter essa estrutura: [binário:str, benefício:int, peso:int, avaliacao:float]
-populacao_tam = len(populacao)
-for i in range(populacao_tam):        
-    av = avaliacaoLinear(populacao_tam, i, sp)    
-    populacao[i].append(av)
+
 
 
 for i in range(2): # range(qt_geracoes):
@@ -44,8 +38,19 @@ for i in range(2): # range(qt_geracoes):
         populacao = [ calculaBeneficioEPeso(x) for x in populacao ]
 
 
-    
-
+    # print("# 2 - Avaliação de cada indivíduo")
+    # os indivíduos devem ter essa estrutura: [binário:str, benefício:int, peso:int, avaliacao:float]
+    if i == 0:
+        populacao = [ calculaBeneficioEPeso( BS(length=8) ) for i in range(POPULACAO_LENGTH) ]
+        if not isinstance(populacao[0], (list, tuple,)):
+            populacao = [ calculaBeneficioEPeso(x) for x in populacao ]
+        avaliacao(populacao)        
+        
+    elif i == 1:
+        populacao = [ calculaBeneficioEPeso( BS(length=8) ) for i in range(POPULACAO_LENGTH) ]
+        if not isinstance(populacao[0], (list, tuple,)):
+            populacao = [ calculaBeneficioEPeso(x) for x in populacao ]
+        avaliacao(populacao)        
 
     # print("#3 - Seleção de alguns indivíduos")
     # precisa da dois pronta para funcionar
