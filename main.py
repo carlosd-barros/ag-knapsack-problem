@@ -1,9 +1,8 @@
-import agbase
 from random import uniform
 
 from agbase import CAPACIDADE as CAP
-from agbase import sortBeneficio, sortPeso, sortAvaliacao, sortValorDeUtilidade
-from agbase import gerarBinarioString, calculaBeneficioEPeso, rankingSelecaoLinear
+from agbase import sortBeneficio, sortPeso, sortAvaliacao, sortValorDeUtilidade, avaliacaoLinear
+from agbase import gerarBinarioString, calculaBeneficioEPeso, rankingSelecaoLinear, criarNovaGeracao
 
 
 #####################################
@@ -34,13 +33,18 @@ melhor_geracao = [0, 0, 0, 0, 0]# [bin, ben, peso, avaliacao, geracao]
 
 # print("# 2 - Avaliação de cada indivíduo")
 # os indivíduos devem ter essa estrutura: [binário:str, benefício:int, peso:int, avaliacao:float]
-for i in range(len(populacao)):        
-    av = agbase.avaliacaoLinear(len(populacao), i, sp)    
+populacao_tam = len(populacao)
+for i in range(populacao_tam):        
+    av = avaliacaoLinear(populacao_tam, i, sp)    
     populacao[i].append(av)
-    
+
+
 for i in range(2): # range(qt_geracoes):
     if not isinstance(populacao[0], (list, tuple,)):
         populacao = [ calculaBeneficioEPeso(x) for x in populacao ]
+
+
+    
 
 
     # print("#3 - Seleção de alguns indivíduos")
@@ -78,7 +82,7 @@ for i in range(2): # range(qt_geracoes):
     length, retries, nova_populacao = 0, 0, []
 
 
-    if melhor: print( f"Melhor da geração ({i}): - binário: {melhor[0]}, benefício: {melhor[1]}, peso: {melhor[2]}, avaliação: {round(melhor[3], 2)}." )
+    if melhor: print( f"Melhor da geração ({i}): - binário: {melhor[0]}, benefício: {melhor[1]}, peso: {melhor[2]}, avaliação: {round(melhor[3], 2)}." )    
 
 
 
