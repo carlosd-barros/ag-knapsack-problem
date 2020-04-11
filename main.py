@@ -3,7 +3,7 @@ from random import uniform
 
 from agbase import CAPACIDADE as CAP
 from agbase import sortBeneficio, sortPeso, sortAvaliacao, sortValorDeUtilidade
-from agbase import gerarBinarioString, calculaBeneficioEPeso, rankingSelecaoLinear
+from agbase import gerarBinarioString, calculaBeneficioEPeso, rankingSelecaoLinear, crossover2, mutacao
 
 
 #####################################
@@ -11,7 +11,7 @@ from agbase import gerarBinarioString, calculaBeneficioEPeso, rankingSelecaoLine
 # 1 - Inicialização da população | FEITO
 # 2 - Avaliação de cada indivíduo | FEITO
 # 3 - Seleção de alguns indivíduos | FEITO
-# 4 - crossover e mutação
+# 4 - crossover e mutação | FEITO
 # 5 - concepção da nova geração
 # repete a partir do passo 2 até estar satisfeito
 # 6 - fim do algoritimo
@@ -52,7 +52,7 @@ for i in range(2): # range(qt_geracoes):
         length = len(melhores)
         retries+=1
 
-
+  
     # pegando o melhor da geração
     dif = melhor = None
     for current_best in melhores:
@@ -66,12 +66,28 @@ for i in range(2): # range(qt_geracoes):
             melhor = current_best
             dif = current_dif
 
+    print(melhor)
+    print(length)
     # pegando o melhor de todas as gerações
     if melhor and melhor[2] > melhor_geracao[2] and melhor[1] > melhor_geracao[1]:
         melhor_geracao = melhor + [i]
 
-
+      
     # print("#4 - crossover e mutação")
+    #função que gera nova população aparti dos 10 melhores
+    #retorna uma lista com 100 str(10 melhores + 90 novas)
+    def gera_nova_populacao(lista):
+        cont=0
+        nova_lista=[]
+        while cont <len(lista):
+            nova_lista.append(lista[cont][0])  
+            for i in range(cont+1,len(lista)):
+                for item in crossover2(lista[cont][0],mutacao(lista[i][0])):
+                    nova_lista.append(item)
+            cont+=1
+        return nova_lista
+
+    nova_populaçao=gera_nova_populacao(melhores)
 
 
     # print("#5 - concepção da nova geração")
